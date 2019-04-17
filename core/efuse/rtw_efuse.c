@@ -1647,7 +1647,7 @@ u32 rtw_read_efuse_from_file(const char *path, u8 *buf)
 	set_fs(KERNEL_DS);
 
 	for (i = 0 ; i < HWSET_MAX_SIZE ; i++) {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 		kernel_read(fp, temp, 2, &pos);
 #else
 		vfs_read(fp, temp, 2, &pos);
@@ -1659,14 +1659,14 @@ u32 rtw_read_efuse_from_file(const char *path, u8 *buf)
 		}
 		if ((i % EFUSE_FILE_COLUMN_NUM) == (EFUSE_FILE_COLUMN_NUM - 1)) {
 			/* Filter the lates space char. */
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 			kernel_read(fp, temp, 1, &pos);
 #else
 			vfs_read(fp, temp, 1, &pos);
 #endif
 			if (strchr(temp, ' ') == NULL) {
 				pos--;
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 				kernel_read(fp, temp, 2, &pos);
 #else
 				vfs_read(fp, temp, 2, &pos);
@@ -1727,7 +1727,7 @@ u32 rtw_read_macaddr_from_file(const char *path, u8 *buf)
 	fs = get_fs();
 	set_fs(KERNEL_DS);
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 	kernel_read(fp, source_addr, 18, &pos);
 #else
 	vfs_read(fp, source_addr, 18, &pos);
