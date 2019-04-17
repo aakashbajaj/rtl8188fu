@@ -49,6 +49,11 @@
 #include <osdep_service_ce.h>
 #endif
 
+#include <linux/version.h>
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0)
+#include <linux/sched/signal.h>
+#endif
+
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)
 
@@ -321,7 +326,11 @@ extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 __inline static unsigned char _cancel_timer_ex(_timer *ptimer)
 {
 #ifdef PLATFORM_LINUX
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
+	return del_timer_sync(&ptimer->t);
+#else
 	return del_timer_sync(ptimer);
+#endif
 #endif
 #ifdef PLATFORM_FREEBSD
 	_cancel_timer(ptimer,0);

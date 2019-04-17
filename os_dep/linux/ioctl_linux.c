@@ -23,6 +23,7 @@
 #include <rtw_mp.h>
 #include <rtw_mp_ioctl.h>
 #include "../../hal/phydm/phydm_precomp.h"
+#include <linux/compat.h>
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
 #define  iwe_stream_add_event(a, b, c, d, e)  iwe_stream_add_event(b, c, d, e)
@@ -13974,7 +13975,7 @@ static int rtw_ioctl_standard_wext_private(struct net_device *dev, struct ifreq 
 static int rtw_ioctl_wext_private(struct net_device *dev, struct ifreq *rq)
 {
 #ifdef CONFIG_COMPAT
-	if(is_compat_task())
+	if(in_compat_syscall())
 		return rtw_ioctl_compat_wext_private( dev, rq );
 	else
 #endif // CONFIG_COMPAT
